@@ -1,3 +1,5 @@
+
+
 def add_time(startTimeString, durationString):
     endTimeStrResult = 'EndTime'
     MINS_IN_DAY = 24 * 60
@@ -5,12 +7,20 @@ def add_time(startTimeString, durationString):
     finalTimeInMins = extractTotalLapsMins(startTimeString, durationString)
 
     finalStopObj = convertMinsToDayTime(finalTimeInMins)
-
-    period = "AM" if finalStopObj["hours"] < 12 else "PM"
-    formatedHrs = finalStopObj["hours"] if period == "AM" else int((finalStopObj["hours"] - 12) // 1)
-    endTimeStrResult = f'{formatedHrs}:{finalStopObj["mins"]} {period}'
+    
+    endTimeStrResult = formatPrintFromDateTime(finalStopObj)
 
     return endTimeStrResult
+
+def formatPrintFromDateTime(finalStopObj):
+    period = "AM" if finalStopObj["hours"] < 12 else "PM"
+    formatedHrs = finalStopObj["hours"] if period == "AM" else (finalStopObj["hours"] - 12) // 1
+    formatedMins = finalStopObj["mins"] if finalStopObj["mins"] > 9 else f'0{finalStopObj["mins"]}'
+    
+    endTimeStrResult = f'{int(formatedHrs)}:{formatedMins} {period}'
+
+    return endTimeStrResult
+
 
 def convertMinsToDayTime(totalMins):
     dateTime = {
@@ -21,8 +31,8 @@ def convertMinsToDayTime(totalMins):
     hours = (totalMins / 60 ) // 1
     mins = (totalMins - (hours * 60)) // 1
 
-    dateTime["hours"] = hours
-    dateTime["mins"] = mins
+    dateTime["hours"] = int(hours)
+    dateTime["mins"] = int(mins)
 
     print(dateTime)
     return dateTime
@@ -53,7 +63,6 @@ def extractTotalLapsMins(startTimeString, durationString):
 
 
 
+print(add_time("5:01 AM", "0:00"))
 
 
-
-print(add_time("3:30 PM", "2:12"))
