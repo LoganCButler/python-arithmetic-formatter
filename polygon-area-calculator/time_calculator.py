@@ -41,7 +41,8 @@ def formatPrintFromDateTime(finalStopObj, startDay):
 
     # add day of week
     if startDay != None:
-        dayOfWeek = DAYS_OF_WEEK_BY_INDEX[finalStopObj["days"]]
+        dayOfWeekIndex = finalStopObj["days"] % 7
+        dayOfWeek = DAYS_OF_WEEK_BY_INDEX[dayOfWeekIndex]
         endTimeStrResult += f', {dayOfWeek}'
 
     # add day change tag
@@ -97,6 +98,6 @@ def extractTotalLapsMins(startTimeString, durationString, dayOffsetMins):
     return finalTimeInMins
 
 
-print("Result:", add_time("11:59 PM", "24:05"))
+print("Result:", add_time("2:59 AM", "24:00", "saturDay"))
 
 
