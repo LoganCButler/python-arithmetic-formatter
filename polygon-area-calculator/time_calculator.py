@@ -19,6 +19,7 @@ DAY_OFFSET_MINS_DIC = {
     None: 0
 }
 
+# Entry Point
 def add_time(startTimeString, durationString, startDay = None):
     endTimeStrResult = 'EndTime'
 
@@ -31,6 +32,7 @@ def add_time(startTimeString, durationString, startDay = None):
 
     return endTimeStrResult
 
+# Format String to Final Result
 def formatPrintFromDateTime(finalStopObj, startDay):
     period = "AM" if finalStopObj["hours"] < 12 else "PM"
     formatedHrs = finalStopObj["hours"] if period == "AM" else (finalStopObj["hours"] - 12) // 1
@@ -56,7 +58,7 @@ def formatPrintFromDateTime(finalStopObj, startDay):
 
     return endTimeStrResult
 
-
+# convert from total mins to laps (int) to days/hrs/mins
 def convertMinsToDayTime(totalMins):
     dateTime = {
         "days": 0,
@@ -74,6 +76,7 @@ def convertMinsToDayTime(totalMins):
 
     return dateTime
 
+# Determin total mins to laps from Sunday 0:00AM
 def extractTotalLapsMins(startTimeString, durationString, dayOffsetMins):
         # normalize start time to mins
     startIndexOfTimeCol = startTimeString.find(':')
