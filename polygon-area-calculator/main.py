@@ -1,9 +1,19 @@
 # This entrypoint file to be used in development. Start by reading README.md
-from time_calculator import add_time
+import shape_calculator
 from unittest import main
 
 
-print(add_time("11:06 PM", "2:02"))
+rect = shape_calculator.Rectangle(5, 10)
+print(rect.get_area())
+rect.set_width(3)
+print(rect.get_perimeter())
+print(rect)
+
+sq = shape_calculator.Square(9)
+print(sq.get_area())
+sq.set_side(4)
+print(sq.get_diagonal())
+print(sq)
 
 
 # Run unit tests automatically

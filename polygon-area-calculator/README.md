@@ -1,46 +1,75 @@
 ### Assignment
 
-Write a function named `add_time` that takes in two required parameters and one optional parameter:
-* a start time in the 12-hour clock format (ending in AM or PM) 
-* a duration time that indicates the number of hours and minutes
-* (optional) a starting day of the week, case insensitive
+In this project you will use object oriented programming to create a Rectangle class and a Square class. The Square class should be a subclass of Rectangle and inherit methods and attributes.
 
-The function should add the duration time to the start time and return the result.
+#### Rectangle class
+When a Rectangle object is created, it should be initialized with `width` and `height` attributes. The class should also contain the following methods:
+* `set_width`
+* `set_height`
+* `get_area`: Returns area (`width * height`)
+* `get_perimeter`: Returns perimeter (`2 * width + 2 * height`)
+* `get_diagonal`: Returns diagonal (`(width ** 2 + height ** 2) ** .5`)
+* `get_picture`: Returns a string that represents the shape using lines of "\*". The number of lines should be equal to the height and the number of "\*" in each line should be equal to the width. There should be a new line (`\n`) at the end of each line. If the width or height is larger than 50, this should return the string: "Too big for picture.".
+* `get_amount_inside`: Takes another shape (square or rectangle) as an argument. Returns the number of times the passed in shape could fit inside the shape (with no rotations). For instance, a rectangle with a width of 4 and a height of 8 could fit in two squares with sides of 4.
 
-If the result will be the next day, it should show `(next day)` after the time. If the result will be more than one day later, it should show `(n days later)` after the time, where "n" is the number of days later.
+Additionally, if an instance of a Rectangle is represented as a string, it should look like: `Rectangle(width=5, height=10)`
 
-If the function is given the optional starting day of the week parameter, then the output should display the day of the week of the result. The day of the week in the output should appear after the time and before the number of days later.
+#### Square class
+The Square class should be a subclass of Rectangle. When a Square object is created, a single side length is passed in. The `__init__` method should store the side length in both the `width` and `height` attributes from the Rectangle class.
 
-Below are some examples of different cases the function should handle. Pay close attention to the spacing and punctuation of the results.
+The Square class should be able to access the Rectangle class methods but should also contain a `set_side` method. If an instance of a Square is represented as a string, it should look like: `Square(side=9)`
+
+Additionally, the `set_width` and `set_height` methods on the Square class should set both the width and height.
+
+#### Usage example
 ```py
-add_time("3:00 PM", "3:10")
-# Returns: 6:10 PM
+rect = shape_calculator.Rectangle(10, 5)
+print(rect.get_area())
+rect.set_height(3)
+print(rect.get_perimeter())
+print(rect)
+print(rect.get_picture())
 
-add_time("11:30 AM", "2:32", "Monday")
-# Returns: 2:02 PM, Monday
+sq = shape_calculator.Square(9)
+print(sq.get_area())
+sq.set_side(4)
+print(sq.get_diagonal())
+print(sq)
+print(sq.get_picture())
 
-add_time("11:43 AM", "00:20")
-# Returns: 12:03 PM
+rect.set_height(8)
+rect.set_width(16)
+print(rect.get_amount_inside(sq))
+```
+That code should return:
+```
+50
+26
+Rectangle(width=10, height=3)
+**********
+**********
+**********
 
-add_time("10:10 PM", "3:30")
-# Returns: 1:40 AM (next day)
+81
+5.656854249492381
+Square(side=4)
+****
+****
+****
+****
 
-add_time("11:43 PM", "24:20", "tueSday")
-# Returns: 12:03 AM, Thursday (2 days later)
-
-add_time("6:30 PM", "205:12")
-# Returns: 7:42 AM (9 days later)
+8
 ```
 
-Do not import any Python libraries. Assume that the start times are valid times. The minutes in the duration time will be a whole number less than 60, but the hour can be any whole number.
+The unit tests for this project are in `test_module.py`.
 
 ### Development
 
-Write your code in `time_calculator.py`. For development, you can use `main.py` to test your `time_calculator()` function. Click the "run" button and `main.py` will run.
+Write your code in `shape_calculator.py`. For development, you can use `main.py` to test your `shape_calculator()` function. Click the "run" button and `main.py` will run.
 
 ### Testing 
 
-The unit tests for this project are in `test_module.py`. We imported the tests from `test_module.py` to `main.py` for your convenience. The tests will run automatically whenever you hit the "run" button.
+We imported the tests from `test_module.py` to `main.py` for your convenience. The tests will run automatically whenever you hit the "run" button.
 
 ### Submitting
 

@@ -1,68 +1,115 @@
 import unittest
-from time_calculator import add_time
+import shape_calculator
 
 
 class UnitTests(unittest.TestCase):
+    def setUp(self):
+        self.rect = shape_calculator.Rectangle(3, 6)
+        self.sq = shape_calculator.Square(5)
 
-    def test_same_period(self):
-        actual = add_time("3:30 PM", "2:12")
-        expected = "5:42 PM"
-        self.assertEqual(actual, expected, 'Expected calling "add_time()" with "3:30 PM", "2:12" to return "5:42 PM"')
+    def test_subclass(self):
+        actual = issubclass(shape_calculator.Square, shape_calculator.Rectangle)
+        expected = True
+        self.assertEqual(actual, expected, 'Expected Square class to be a subclass of the Rectangle class.')
 
-    def test_different_period(self):
-        actual = add_time("11:55 AM", "3:12")
-        expected = "3:07 PM"
-        self.assertEqual(actual, expected, 'Expected calling "add_time()" with "11:55 AM", "3:12" to return "3:07 PM"')
+    def test_distinct_classes(self):
+        actual = shape_calculator.Square is not shape_calculator.Rectangle
+        expected = True
+        self.assertEqual(actual, expected, 'Expected Square class to be a distinct class from the Rectangle class.')
 
-    def test_next_day(self):
-        actual = add_time("9:15 PM", "5:30")
-        expected = "2:45 AM (next day)"
-        self.assertEqual(actual, expected, 'Expected time to end with "(next day)" when it is the next day.')
+    def test_square_is_square_and_rectangle(self):
+        actual = isinstance(self.sq, shape_calculator.Square) and isinstance(self.sq, shape_calculator.Square)
+        expected = True
+        self.assertEqual(actual, expected, 'Expected square object to be an instance of the Square class and the Rectangle class.')
 
-    def test_period_change_at_twelve(self):
-        actual = add_time("11:40 AM", "0:25")
-        expected = "12:05 PM"
-        self.assertEqual(actual, expected, 'Expected period to change from AM to PM at 12:00')
+    def test_rectangle_string(self):
+        actual = str(self.rect)
+        expected = "Rectangle(width=3, height=6)"
+        self.assertEqual(actual, expected, 'Expected string representation of rectangle to be "Rectangle(width=3, height=6)"')
 
-    def test_twenty_four(self):
-        actual = add_time("2:59 AM", "24:00")
-        expected = "2:59 AM (next day)"
-        self.assertEqual(actual, expected, 'Expected calling "add_time()" with "2:59 AM", "24:00" to return "2:59 AM"')
+    def test_square_string(self):
+        actual = str(self.sq)
+        expected = "Square(side=5)"
+        self.assertEqual(actual, expected, 'Expected string representation of square to be "Square(side=5)"')
 
-    def test_two_days_later(self):
-        actual = add_time("11:59 PM", "24:05")
-        expected = "12:04 AM (2 days later)"
-        self.assertEqual(actual, expected, 'Expected calling "add_time()" with "11:59 PM", "24:05" to return "12:04 AM (2 days later)"')
+    def test_area(self):
+        actual = self.rect.get_area()
+        expected = 18
+        self.assertEqual(actual, expected, 'Expected area of rectangle to be 18')
+        actual = self.sq.get_area()
+        expected = 25
+        self.assertEqual(actual, expected, 'Expected area of rectangle to be 25')
+        
 
-    def test_high_duration(self):
-        actual = add_time("8:16 PM", "466:02")
-        expected = "6:18 AM (20 days later)"
-        self.assertEqual(actual, expected, 'Expected calling "add_time()" with "8:16 PM", "466:02" to return "6:18 AM (20 days later)"')
+    def test_perimeter(self):
+        actual = self.rect.get_perimeter()
+        expected = 18
+        self.assertEqual(actual, expected, 'Expected perimeter of rectangle to be 18')
+        actual = self.sq.get_perimeter()
+        expected = 20
+        self.assertEqual(actual, expected, 'Expected perimeter of rectangle to be 20')
 
-    def test_no_change(self):
-        actual = add_time("5:01 AM", "0:00")
-        expected = "5:01 AM"
-        self.assertEqual(actual, expected, 'Expected adding 0:00 to return initial time.')
+    def test_diagonal(self):
+        actual = self.rect.get_diagonal()
+        expected = 6.708203932499369
+        self.assertEqual(actual, expected, 'Expected diagonal of rectangle to be 6.708203932499369')
+        actual = self.sq.get_diagonal()
+        expected = 7.0710678118654755
+        self.assertEqual(actual, expected, 'Expected diagonal of rectangle to be 7.0710678118654755')
 
-    def test_same_period_with_day(self):
-        actual = add_time("3:30 PM", "2:12", "Monday")
-        expected = "5:42 PM, Monday"
-        self.assertEqual(actual, expected, 'Expected calling "add_time()" with "3:30 PM", "2:12", "Monday" to return "5:42 PM, Monday"')
+    def test_set_atributes(self):
+        self.rect.set_width(7)
+        self.rect.set_height(8)
+        self.sq.set_side(2)
+        actual = str(self.rect)
+        expected = "Rectangle(width=7, height=8)"
+        self.assertEqual(actual, expected, 'Expected string representation of rectangle after setting new values to be "Rectangle(width=7, height=8)"')
+        actual = str(self.sq)
+        expected = "Square(side=2)"
+        self.assertEqual(actual, expected, 'Expected string representation of square after setting new values to be "Square(side=2)"')
+        self.sq.set_width(4)
+        actual = str(self.sq)
+        expected = "Square(side=4)"
+        self.assertEqual(actual, expected, 'Expected string representation of square after setting width to be "Square(side=4)"')
 
-    def test_twenty_four_with_day(self):
-        actual = add_time("2:59 AM", "24:00", "saturDay")
-        expected = "2:59 AM, Sunday (next day)"
-        self.assertEqual(actual, expected, 'Expected calling "add_time()" with "2:59 AM", "24:00", "saturDay" to return "2:59 AM, Sunday (next day)"')
+    def test_rectangle_picture(self):
+        self.rect.set_width(7)
+        self.rect.set_height(3)
+        actual = self.rect.get_picture()
+        expected = "*******\n*******\n*******\n"
+        self.assertEqual(actual, expected, 'Expected rectangle picture to be different.')     
 
-    def test_two_days_later_with_day(self):
-        actual = add_time("11:59 PM", "24:05", "Wednesday")
-        expected = "12:04 AM, Friday (2 days later)"
-        self.assertEqual(actual, expected, 'Expected calling "add_time()" with "2:59 AM", "24:00", "Friday" to return "12:04 AM, Friday (2 days later)"')
+    def test_squaree_picture(self):
+        self.sq.set_side(2)
+        actual = self.sq.get_picture()
+        expected = "**\n**\n"
+        self.assertEqual(actual, expected, 'Expected square picture to be different.')   
 
-    def test_high_duration_with_day(self):
-        actual = add_time("8:16 PM", "466:02", "tuesday")
-        expected = "6:18 AM, Monday (20 days later)"
-        self.assertEqual(actual, expected, 'Expected calling "add_time()" with "8:16 PM", "466:02", "tuesday" to return "6:18 AM, Monday (20 days later)"')
+    def test_big_picture(self):
+        self.rect.set_width(51)
+        self.rect.set_height(3)
+        actual = self.rect.get_picture()
+        expected = "Too big for picture."
+        self.assertEqual(actual, expected, 'Expected message: "Too big for picture."')
 
+    def test_get_amount_inside(self):
+        self.rect.set_height(10)
+        self.rect.set_width(15)
+        actual = self.rect.get_amount_inside(self.sq)
+        expected = 6
+        self.assertEqual(actual, expected, 'Expected `get_amount_inside` to return 6.')
+
+    def test_get_amount_inside_two_rectangles(self):
+        rect2 = shape_calculator.Rectangle(4, 8)
+        actual = rect2.get_amount_inside(self.rect)
+        expected = 1
+        self.assertEqual(actual, expected, 'Expected `get_amount_inside` to return 1.')
+
+    def test_get_amount_inside_none(self):
+        rect2 = shape_calculator.Rectangle(2, 3)
+        actual = rect2.get_amount_inside(self.rect)
+        expected = 0
+        self.assertEqual(actual, expected, 'Expected `get_amount_inside` to return 0.')
+        
 if __name__ == "__main__":
     unittest.main()
