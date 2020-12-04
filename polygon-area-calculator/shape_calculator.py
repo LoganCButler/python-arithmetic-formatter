@@ -18,10 +18,11 @@ class Rectangle:
     
     def get_perimeter(self):
         return (self.height * 2) + (self.width * 2)
-    
+     
     def get_diagonal(self):
         return (self.width ** 2 + self.height ** 2) ** .5
 
+    # Returns a string that represents the shape using lines of "*"
     def get_picture(self):
         pictureString = ''
 
@@ -31,12 +32,19 @@ class Rectangle:
         for lineHeight in range(self.height):
             pictureString += ("*" * self.width ) + "\n"
         
-        
         return pictureString
-       
 
-    def get_amount_inside(self):
-        pass #TODO: not implemented
+    # get_amount_inside
+    # Returns the number of times the passed in shape could fit inside the shape (with no rotations)
+    # {attemptShapInside} (Rectangle) = shape to fit inside
+    def get_amount_inside(self, attemptShapInside):
+        horizontalTransitions = 0
+        verticalTransitions = 0
+
+        horizontalTransitions = (self.width / attemptShapInside.width) // 1
+        verticalTransitions = (self.height / attemptShapInside.height) // 1
+
+        return int(horizontalTransitions * verticalTransitions)
 
 
 
@@ -45,16 +53,10 @@ class Square(Rectangle):
     def __init__(self, sideLength): 
         super().__init__(sideLength, sideLength)
     
+    def __str__(self):
+        return f'Square(side={self.width})'
+
     def set_side(self, side):
         self.set_width(side)
         self.set_height(side)
 
-    def __str__(self):
-        return f'Square(side={self.width})'
-
-
-
-rect = Rectangle(5, 3)
-rect.set_width(9)
-print(rect)
-print(rect.get_picture())
