@@ -23,7 +23,17 @@ class Rectangle:
         return (self.width ** 2 + self.height ** 2) ** .5
 
     def get_picture(self):
-        pass #TODO: not implemented
+        pictureString = ''
+
+        if self.width > 50 or self.height > 50:
+            return "Too big for picture."
+        
+        for lineHeight in range(self.height):
+            pictureString += ("*" * self.width ) + "\n"
+        
+        
+        return pictureString
+       
 
     def get_amount_inside(self):
         pass #TODO: not implemented
@@ -47,6 +57,4 @@ class Square(Rectangle):
 rect = Rectangle(5, 3)
 rect.set_width(9)
 print(rect)
-print(rect.get_diagonal())
-
-print(Square(2))
+print(rect.get_picture())
