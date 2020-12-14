@@ -101,7 +101,43 @@ class LedgerEntry:
 
 
 def create_spend_chart(categories):
-    pass
+    chartString = "Percentage spent by category\n"
+    yInterval = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0]
+
+    for interval in yInterval:
+        displayLable = ''
+        leadingSpaces = 3 - len(f'{interval}')
+
+        displayLable += " " * leadingSpaces
+        displayLable += f'{interval}|'
+
+        # TODO: Add loop to add category data points
+
+
+        chartString += displayLable + '\n'
+
+    # botom of chart
+    chartString += '    ' + ('---' * len(categories)) + '\n'
+
+    # x-axis lables
+    longestXTitle = 0
+    for catagory in categories:
+        catNameLeng = len(catagory.name)
+        if catNameLeng > longestXTitle:
+            longestXTitle = catNameLeng
+    
+    for i in range(0, longestXTitle):
+        chartString += '    ' # starting offset
+        for catagory in categories:
+            character = catagory.name[i:i+1]
+            displayChar = character if character is not '' else ' '
+
+            chartString += ' ' + displayChar + ' '
+        chartString += '\n'
+
+    
+
+    return chartString
 
 
 food = Category("Food")
@@ -109,4 +145,4 @@ food.deposit(1000, "initial deposit")
 food.deposit(1000, "second deposit with long description")
 clothing = Category("Clothing")
 food.transfer(50, clothing)
-print(food)
+print(create_spend_chart([food, clothing]))
