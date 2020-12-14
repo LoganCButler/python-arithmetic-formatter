@@ -50,6 +50,39 @@ class Category:
 
     def check_funds(self, amountRequest):
         return self.get_balance() >= amountRequest
+
+    def __str__(self):
+        finalString = ""
+        finalString = self.addTitleHeader(finalString)
+        finalString = self.addLineItmes(finalString)
+        finalString += f'Total: {self.formatToDollar(self.get_balance())}'
+        return finalString
+
+    def addLineItmes(self, finalString):
+        printHoriz = 30
+
+        for lineItem in self.internalLedger:
+            descriptiondisplay = lineItem.details[0][:23]
+            amountDispay = f'{self.formatToDollar(lineItem.amount)}' if lineItem.entryType is EntryType.deposit else f'-{self.formatToDollar(lineItem.amount)}'
+
+            internalSpacesCount = printHoriz - len(descriptiondisplay) - len(amountDispay)
+
+            finalString += descriptiondisplay + " " * internalSpacesCount + amountDispay
+            finalString += '\n'
+        return finalString
+
+    def addTitleHeader(self, finalString):
+        printHoriz = 30
+        titleOffset = int(((printHoriz / 2) - (len(self.name) / 2)) // 1)
+
+        finalString += "*" * titleOffset
+        finalString += self.name
+        finalString += "*" * (printHoriz - len(finalString))
+        finalString += '\n'
+        return finalString
+    
+    def formatToDollar(self, amount):
+        return '{:.2f}'.format(amount)
             
 
 
@@ -73,7 +106,7 @@ def create_spend_chart(categories):
 
 food = Category("Food")
 food.deposit(1000, "initial deposit")
+food.deposit(1000, "second deposit with long description")
 clothing = Category("Clothing")
 food.transfer(50, clothing)
-print("food budget", food.get_balance())
-print("clothing budget", clothing.get_balance())
+print(food)
